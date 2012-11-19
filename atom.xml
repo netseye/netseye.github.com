@@ -4,7 +4,7 @@
   <title><![CDATA[My Octopress Blog]]></title>
   <link href="http://netseye.github.com/atom.xml" rel="self"/>
   <link href="http://netseye.github.com/"/>
-  <updated>2012-11-20T02:40:13+08:00</updated>
+  <updated>2012-11-20T02:52:43+08:00</updated>
   <id>http://netseye.github.com/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
@@ -12,5 +12,14 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[title]]></title>
+    <link href="http://netseye.github.com/blog/2012/11/20/title/"/>
+    <updated>2012-11-20T02:49:00+08:00</updated>
+    <id>http://netseye.github.com/blog/2012/11/20/title</id>
+    <content type="html"><![CDATA[<p><title>Hello World!</title></p>
+]]></content>
+  </entry>
   
 </feed>
