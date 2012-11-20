@@ -3,14 +3,12 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Netseye</title>
+	<title>Octopress安装尝试 - Netseye</title>
 	<meta name="author" content="Netseye">
 
 	
-	<meta name="description" content="只需在終端機輸入以下指令，即可完成安裝： $ cd octopress
-$ git clone git://github.com/tommy351/Octopress-Theme-Slash.git .themes/slash
-$ rake install['slash']
-$ rake &hellip;">
+	<meta name="description" content="首先从githua上活的源代码: git clone git://github.com/imathis/octopress.git 然后依照官方文档:
+Create a new Github repository and name the repository with your user &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -73,83 +71,9 @@ $ rake &hellip;">
 	
 		
 	
-	<div id="content" class="inner">
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2012/11/20/an-zhuang-slash-zhu-ti/">
-		
-			安装Slash 主题</a>
-	</h2>
-	<div class="entry-content">
-		<p>只需在終端機輸入以下指令，即可完成安裝：</p>
-
-<pre><code>$ cd octopress
-$ git clone git://github.com/tommy351/Octopress-Theme-Slash.git .themes/slash
-$ rake install['slash']
-$ rake generate
-</code></pre>
-
-<p>使用 zsh 時發生問題嗎？試試看rake install[&#8216;slash&#8217;]。</p>
-
-<h5>如何顯示右上角的 Facebook 連結？</h5>
-
-<p>在_config.yml新增facebook_user參數，並填入您的 Facebook ID。
-如何編輯選單？</p>
-
-<p>編輯slash→source→_includes→custom→navigation.html。</p>
-
-<h5>如何隱藏頁首的 Twitter 訊息串？</h5>
-
-<p>刪除slash→source→_layouts→default.html的第 6 行。</p>
-
-<h5>如何關閉 Fancybox？</h5>
-
-<p>刪除slash→source→_includes→after_footer.html的第 4 行。</p>
-
-<p>刪除slash→source→javascripts→caption.js第 14 行。</p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-11-20T11:11:00+08:00" pubdate data-updated="true">Nov 20<span>th</span>, 2012</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/octopress/'>Octopress</a>
-
-
-</div>
-	
-</div></article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2012/11/20/anzhuang-octopress/">
-		
-			Octopress安装尝试</a>
-	</h2>
-	<div class="entry-content">
-		<p>首先从githua上活的源代码:</p>
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">Octopress安装尝试</h2>
+	<div class="entry-content"><p>首先从githua上活的源代码:</p>
 
 <pre><code>git clone git://github.com/imathis/octopress.git
 </code></pre>
@@ -179,10 +103,7 @@ git push origin source
 </code></pre>
 
 <p>然后创建创建一个cname记录指向charlie.github.com或者A记录指向207.97.227.245</p>
-
-		
-		
-	</div>
+</div>
 
 
 <div class="meta">
@@ -205,11 +126,20 @@ git push origin source
 	
 </div></article>
 
-<nav id="pagenavi">
-    
-    
-    <div class="center"><a href="/blog/archives">Blog Archives</a></div>
-</nav></div>
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+</div>
 	<footer id="footer" class="inner">Copyright &copy; 2012
 
     Netseye
