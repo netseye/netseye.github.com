@@ -4,7 +4,7 @@
   <title><![CDATA[Netseye]]></title>
   <link href="http://blog.xffox.com/atom.xml" rel="self"/>
   <link href="http://blog.xffox.com/"/>
-  <updated>2012-11-20T23:16:57+08:00</updated>
+  <updated>2012-11-20T23:18:58+08:00</updated>
   <id>http://blog.xffox.com/</id>
   <author>
     <name><![CDATA[Netseye]]></name>
@@ -21,12 +21,12 @@
     <content type="html"><![CDATA[<p>最近偶然发现雅痞字体感觉不错.具体是不是mac的默认字体就不太清楚了.遂尝试在ios里面使用.
 首先从系统的字体管理里面找出雅痞字体</p>
 
-<p><img src="http://blog.xffox.com/Users/netseye/Sites/blog/octopress/source/resource/images/DD64A979-FB6C-4D23-9F05-2929F0657DC0.png" title="Optional title" alt="Alt text" /></p>
+<p><img src="http://blog.xffox.com/resource/images/DD64A979-FB6C-4D23-9F05-2929F0657DC0.png" title="Optional title" alt="Alt text" /></p>
 
 <p>新建一个ios项目我们命名为CustomFont选择Single view Application,
 然后把字体拖到项目中.
 找到项目下的info.plist, 右键add Row 选择 UIAppFonts (Fonts provided by application) 类型为array ,添加一项item0 value为刚才拖到项目中的字体的名字.(貌似新版xcode里面类型是确定的不能修改)
-<img src="http://blog.xffox.com/Users/netseye/Sites/blog/octopress/source/resource/images/8675FC10-8E6A-48DF-A46C-1B02E3E1266F.png" title="Optional title" alt="Alt text" />
+<img src="resource/images/8675FC10-8E6A-48DF-A46C-1B02E3E1266F.png" title="Optional title" alt="Alt text" />
 这样基本上算是完成了.我们只需要在程序里面是用</p>
 
 <pre><code>[UIFont fontWithName:@"字体名称" size:字号];
@@ -34,7 +34,7 @@
 
 <p>也许你困惑字体名称到底是什么那?
 我们重新打开字体管理然后按command+i会看到字体的相应信息
-<img src="http://blog.xffox.com/Users/netseye/Sites/blog/octopress/source/resource/images/46976BBB-D3DE-4B62-B764-6FFCD169B2BB.png" title="Optional title" alt="Alt text" />
+<img src="http://blog.xffox.com/resource/images/46976BBB-D3DE-4B62-B764-6FFCD169B2BB.png" title="Optional title" alt="Alt text" />
 PostScript name就是otf的字体名字了
 此时我们在代码中写入</p>
 
@@ -43,7 +43,7 @@ PostScript name就是otf的字体名字了
 
 <p>运行代码得到效果</p>
 
-<p><img src="http://blog.xffox.com/Users/netseye/Sites/blog/octopress/source/resource/images/ED7FDBBF-A91B-4C53-BAA7-43C3FF8B6B7B.png" title="Optional title" alt="Alt text" /></p>
+<p><img src="http://blog.xffox.com/resource/images/ED7FDBBF-A91B-4C53-BAA7-43C3FF8B6B7B.png" title="Optional title" alt="Alt text" /></p>
 ]]></content>
   </entry>
   
