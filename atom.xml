@@ -4,7 +4,7 @@
   <title><![CDATA[My Octopress Blog]]></title>
   <link href="http://netseye.github.com/atom.xml" rel="self"/>
   <link href="http://netseye.github.com/"/>
-  <updated>2012-11-20T02:52:43+08:00</updated>
+  <updated>2012-11-20T10:19:24+08:00</updated>
   <id>http://netseye.github.com/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
@@ -18,7 +18,38 @@
     <link href="http://netseye.github.com/blog/2012/11/20/title/"/>
     <updated>2012-11-20T02:49:00+08:00</updated>
     <id>http://netseye.github.com/blog/2012/11/20/title</id>
-    <content type="html"><![CDATA[<p><title>Hello World!</title></p>
+    <content type="html"><![CDATA[<h1>Octopress安装尝试</h1>
+
+<p>首先从githua上活的源代码:</p>
+
+<pre><code>git clone git://github.com/imathis/octopress.git
+</code></pre>
+
+<p>然后依照官方文档:
+Create a new Github repository and name the repository with your user name or organization name username.github.com or organization.github.com.</p>
+
+<pre><code>rake setup_github_pages
+</code></pre>
+
+<p>按照提示输入刚才新建的Repo地址，类似：git@github.com:用户名/用户名.github.com.git。</p>
+
+<pre><code>rake generate
+rake deploy
+</code></pre>
+
+<p>顺便提交下源代码</p>
+
+<pre><code>git add .
+git commit -m 'your message'
+git push origin source
+</code></pre>
+
+<p>绑定自己的域名只需要在source目录下创建一个CANME文件内容为你需要绑定的域名</p>
+
+<pre><code>    echo 'your-domain.com' &gt;&gt; source/CNAME
+</code></pre>
+
+<p>然后创建创建一个cname记录指向charlie.github.com或者A记录指向207.97.227.245</p>
 ]]></content>
   </entry>
   
