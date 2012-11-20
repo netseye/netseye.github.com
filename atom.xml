@@ -4,7 +4,7 @@
   <title><![CDATA[Netseye]]></title>
   <link href="http://blog.xffox.com/atom.xml" rel="self"/>
   <link href="http://blog.xffox.com/"/>
-  <updated>2012-11-20T11:37:04+08:00</updated>
+  <updated>2012-11-20T11:38:24+08:00</updated>
   <id>http://blog.xffox.com/</id>
   <author>
     <name><![CDATA[Netseye]]></name>
@@ -49,9 +49,9 @@ $ rake generate
   
   <entry>
     <title type="html"><![CDATA[Octopress安装尝试]]></title>
-    <link href="http://blog.xffox.com/blog/2012/11/20/anzhuang-octopress/"/>
+    <link href="http://blog.xffox.com/blog/2012/11/20/title/"/>
     <updated>2012-11-20T02:49:00+08:00</updated>
-    <id>http://blog.xffox.com/blog/2012/11/20/anzhuang-octopress</id>
+    <id>http://blog.xffox.com/blog/2012/11/20/title</id>
     <content type="html"><![CDATA[<p>首先从githua上活的源代码:</p>
 
 <pre><code>git clone git://github.com/imathis/octopress.git
