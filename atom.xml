@@ -4,7 +4,7 @@
   <title><![CDATA[Netseye]]></title>
   <link href="http://blog.xffox.com/atom.xml" rel="self"/>
   <link href="http://blog.xffox.com/"/>
-  <updated>2012-11-20T23:22:41+08:00</updated>
+  <updated>2012-11-22T01:16:07+08:00</updated>
   <id>http://blog.xffox.com/</id>
   <author>
     <name><![CDATA[Netseye]]></name>
@@ -12,6 +12,178 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[编译iphone的静态库]]></title>
+    <link href="http://blog.xffox.com/blog/2012/11/20/bian-yi-iphonede-jing-tai-ku/"/>
+    <updated>2012-11-20T23:43:00+08:00</updated>
+    <id>http://blog.xffox.com/blog/2012/11/20/bian-yi-iphonede-jing-tai-ku</id>
+    <content type="html"><![CDATA[<p>由于帮朋友处理点东西,所以去了解了下curl.
+首先从
+<a href="http://curl.haxx.se/download.html">http://curl.haxx.se/download.html</a>
+没有移动客户端相应的包所以只能下源代码自己编译</p>
+
+<pre><code>$ wget http://curl.haxx.se/download/curl-7.28.1.tar.gz
+$ tar zxvf curl-7.28.1.tar.gz
+$ cd curl-7.28.1
+</code></pre>
+
+<p>在这里有编译之前需要确定一下xcode的版本印象中好像4.3还是4.4以后xcode就变成一个独立的app了一些位置也不同需要对脚本做相应的修改
+之前的版本不支持ios6也编译不出来armv7s,然后支持ios6的xcode是不支持armv6的
+当然你也可以分别编译自己在合并一次.
+我们在curl源代码目录下建立一个build.sh然后输入</p>
+
+<pre>
+#!/bin/sh 
+export SDK=5.0
+
+buildit()
+{
+    target=$1
+    platform=$2
+
+    export CC=/Developer/Platforms/${platform}.platform/Developer/usr/bin/gcc
+    export CFLAGS="-arch ${target} -isysroot /Developer/Platforms/${platform}.platform/Developer/SDKs/${platform}${SDK}.sdk" 
+    export CPP="/Developer/Platforms/${platform}.platform/Developer/usr/bin/llvm-cpp-4.2" 
+    export AR=/Developer/Platforms/${platform}.platform/Developer/usr/bin/ar
+    export RANLIB=/Developer/Platforms/${platform}.platform/Developer/usr/bin/ranlib
+
+    ./configure --disable-shared --without-ssl --without-libssh2 --without-ca-bundle --without-ldap --disable-ldap \
+            --host=${target}-apple-darwin10
+
+    make clean
+    make
+    $AR rv libcurl.${target}.a lib/*.o
+}
+
+
+buildit armv6 iPhoneOS
+buildit armv7 iPhoneOS
+buildit i386 iPhoneSimulator
+
+lipo -create libcurl.armv7s.a libcurl.armv7.a libcurl.armv6.a libcurl.i386.a -output libcurl.a
+</pre>
+
+
+<p>当你的xcode是最新版的时候而且需要支持armv7s的时候你就需要把脚本内容替换为</p>
+
+<pre>
+#!/bin/sh 
+export SDK=6.0
+
+buildit()
+{
+    target=$1
+    platform=$2
+
+    export CC=/Applications/Xcode.app/Contents/Developer/Platforms/${platform}.platform/Developer/usr/bin/gcc
+    export CFLAGS="-arch ${target} -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/${platform}.platform/Developer/SDKs/${platform}${SDK}.sdk"
+    export CPP="/Applications/Xcode.app/Contents/Developer/Platforms/${platform}.platform/Developer/usr/bin/llvm-cpp-4.2"
+    export AR=/Applications/Xcode.app/Contents/Developer/Platforms/${platform}.platform/Developer/usr/bin/ar
+    export RANLIB=/Applications/Xcode.app/Contents/Developer/Platforms/${platform}.platform/Developer/usr/bin/ranlib
+
+    ./configure --disable-shared --without-ssl --without-libssh2 --without-ca-bundle --without-ldap --disable-ldap \
+            --host=${target}-apple-darwin10
+
+    make clean
+    make
+    $AR rv libcurl.${target}.a lib/*.o
+}
+
+buildit armv7 iPhoneOS
+buildit armv7s iPhoneOS
+buildit i386 iPhoneSimulator
+
+lipo -create libcurl.armv7.a libcurl.armv7s.a libcurl.i386.a -output libcurl.a
+</pre>
+
+
+<p>然后你还需要给build.sh执行权限才能执行执行</p>
+
+<pre><code>$ chmod +x ./build.sh
+$ ./build.sh
+</code></pre>
+
+<p>等待脚本执行完毕就可以在当前目录下找到你需要的libcurl.a
+可以通过lipo 来查看库的信息</p>
+
+<pre><code>$ netseye:curl-7.28.1 netseye$ lipo -info libcurl.a
+Architectures in the fat file: libcurl.a are: armv7 (cputype (12) cpusubtype (11)) i386 
+</code></pre>
+
+<p>我们简单的通过fiile命令来查看文件的构架</p>
+
+<pre><code>$ netseye:curl-7.28.1 netseye$ file libcurl.a
+libcurl.a: Mach-O universal binary with 3 architectures
+libcurl.a (for architecture armv7): current ar archive random library
+libcurl.a (for architecture cputype (12) cpusubtype (11)):  current ar archive random library
+libcurl.a (for architecture i386):  current ar archive random library
+</code></pre>
+
+<p>至此我们就可以把静态库拖到项目里应用了.</p>
+
+<p>后记:
+ 实际应用中按照php的curl库的思路去寻找一个 CURLOPT_RETURNTRANSFER最后发现只能使用CURLOPT_WRITEFUNCTION和CURLOPT_WRITEDATA来获得请求数据</p>
+
+<pre>
+#include <stdio.h>#include <stdlib.h>#include <string.h>#include <curl/curl.h>struct string {  char *ptr;  size_t len;};void init_string(struct string *s) {  s->len = 0;  s->ptr = malloc(s->len+1);  if (s->ptr == NULL) {    fprintf(stderr, "malloc() failed\n");    exit(EXIT_FAILURE);  }  s->ptr[0] = '\0';}size_t writefunc(void *ptr, size_t size, size_t nmemb, struct string *s){  size_t new_len = s->len + size*nmemb;  s->ptr = realloc(s->ptr, new_len+1);  if (s->ptr == NULL) {    fprintf(stderr, "realloc() failed\n");    exit(EXIT_FAILURE);  }  memcpy(s->ptr+s->len, ptr, size*nmemb);  s->ptr[new_len] = '\0';  s->len = new_len;  return size*nmemb;}int main(void){  CURL *curl;  CURLcode res;  curl = curl_easy_init();  if(curl) {    struct string s;    init_string(&s);    curl_easy_setopt(curl, CURLOPT_URL, "curl.haxx.se");    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writefunc);    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &s);    res = curl_easy_perform(curl);    printf("%s\n", s.ptr);    free(s.ptr);    /* always cleanup */    curl_easy_cleanup(curl);  }  return 0;}</pre>
+
+
+<p></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ios检测耳机插拔事件]]></title>
+    <link href="http://blog.xffox.com/blog/2012/11/20/iosjian-ce-er-ji-cha-ba-shi-jian/"/>
+    <updated>2012-11-20T23:32:00+08:00</updated>
+    <id>http://blog.xffox.com/blog/2012/11/20/iosjian-ce-er-ji-cha-ba-shi-jian</id>
+    <content type="html"><![CDATA[<p>最近在做一个模仿唱吧的东西,在录制中插拔耳机的话会有短暂的无声,通过对耳机插拔事件的监听可以先暂停一下录制然后在开始录来解决</p>
+
+<pre><code>//添加一个监听事件
+AudioSessionInitialize (NULL, NULL, NULL, NULL);
+OSStatus status = AudioSessionAddPropertyListener(
+kAudioSessionProperty_AudioRouteChange,
+audioRouteChangeListenerCallback,self);
+//if(status == 0){//ok;}
+
+//事件处理
+void audioRouteChangeListenerCallback (
+    void *inUserData,
+    AudioSessionPropertyID inID,
+    UInt32 inDataSize,
+    const void *inData)
+    {
+    UInt32 propertySize = sizeof(CFStringRef);
+    AudioSessionInitialize(NULL, NULL, NULL, NULL);
+    CFStringRef state = nil;
+    AudioSessionGetProperty(kAudioSessionProperty_AudioRoute
+    ,&amp;propertySize,&amp;state);
+
+    NSLog(@"%@",(NSString *)state);//return @"Headphone" or @"Speaker" and so on.
+}
+</code></pre>
+
+<p>还提供了查询功能</p>
+
+<pre><code>//get的使用
+UInt32 propertySize = sizeof(CFStringRef);
+AudioSessionInitialize(NULL, NULL, NULL, NULL);
+CFStringRef state = nil;
+AudioSessionGetProperty(
+kAudioSessionProperty_AudioRoute,
+&amp;propertySize,&amp;state);
+
+//set的使用
+UInt32 propertySize = sizeof(UInt32);
+AudioSessionInitialize(NULL, NULL, NULL, NULL);
+UInt32 state = (1);
+AudioSessionSetProperty(
+kAudioSessionProperty_OtherMixableAudioShouldDuck,
+propertySize,&amp;state);
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[ios使用雅痞字体]]></title>

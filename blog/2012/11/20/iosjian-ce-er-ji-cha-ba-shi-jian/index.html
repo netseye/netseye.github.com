@@ -1,0 +1,181 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>ios检测耳机插拔事件 - Netseye</title>
+	<meta name="author" content="Netseye">
+
+	
+	<meta name="description" content="最近在做一个模仿唱吧的东西,在录制中插拔耳机的话会有短暂的无声,通过对耳机插拔事件的监听可以先暂停一下录制然后在开始录来解决 //添加一个监听事件
+AudioSessionInitialize (NULL, NULL, NULL, NULL);
+OSStatus status = &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="Netseye" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
+</head>
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">Netseye</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="http://google.com/search" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:blog.xffox.com">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+	</div>
+	<form class="search" action="http://google.com/search" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:blog.xffox.com">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">Ios检测耳机插拔事件</h2>
+	<div class="entry-content"><p>最近在做一个模仿唱吧的东西,在录制中插拔耳机的话会有短暂的无声,通过对耳机插拔事件的监听可以先暂停一下录制然后在开始录来解决</p>
+
+<pre><code>//添加一个监听事件
+AudioSessionInitialize (NULL, NULL, NULL, NULL);
+OSStatus status = AudioSessionAddPropertyListener(
+kAudioSessionProperty_AudioRouteChange,
+audioRouteChangeListenerCallback,self);
+//if(status == 0){//ok;}
+
+//事件处理
+void audioRouteChangeListenerCallback (
+    void *inUserData,
+    AudioSessionPropertyID inID,
+    UInt32 inDataSize,
+    const void *inData)
+    {
+    UInt32 propertySize = sizeof(CFStringRef);
+    AudioSessionInitialize(NULL, NULL, NULL, NULL);
+    CFStringRef state = nil;
+    AudioSessionGetProperty(kAudioSessionProperty_AudioRoute
+    ,&amp;propertySize,&amp;state);
+
+    NSLog(@"%@",(NSString *)state);//return @"Headphone" or @"Speaker" and so on.
+}
+</code></pre>
+
+<p>还提供了查询功能</p>
+
+<pre><code>//get的使用
+UInt32 propertySize = sizeof(CFStringRef);
+AudioSessionInitialize(NULL, NULL, NULL, NULL);
+CFStringRef state = nil;
+AudioSessionGetProperty(
+kAudioSessionProperty_AudioRoute,
+&amp;propertySize,&amp;state);
+
+//set的使用
+UInt32 propertySize = sizeof(UInt32);
+AudioSessionInitialize(NULL, NULL, NULL, NULL);
+UInt32 state = (1);
+AudioSessionSetProperty(
+kAudioSessionProperty_OtherMixableAudioShouldDuck,
+propertySize,&amp;state);
+</code></pre>
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-20T23:32:00+08:00" pubdate data-updated="true">Nov 20<span>th</span>, 2012</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/ios/'>ios</a>
+
+
+</div>
+	
+</div></article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2012
+
+    Netseye
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+
+
+
+
+</body>
+</html>
