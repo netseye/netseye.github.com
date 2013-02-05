@@ -4,7 +4,7 @@
   <title><![CDATA[Netseye]]></title>
   <link href="http://blog.xffox.com/atom.xml" rel="self"/>
   <link href="http://blog.xffox.com/"/>
-  <updated>2012-11-22T01:16:07+08:00</updated>
+  <updated>2013-02-05T14:47:33+08:00</updated>
   <id>http://blog.xffox.com/</id>
   <author>
     <name><![CDATA[Netseye]]></name>
@@ -12,6 +12,15 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[ios录制声音画出音频指示器]]></title>
+    <link href="http://blog.xffox.com/blog/2012/11/23/ioslu-zhi-sheng-yin-hua-chu-yin-pin-zhi-shi-qi/"/>
+    <updated>2012-11-23T00:45:00+08:00</updated>
+    <id>http://blog.xffox.com/blog/2012/11/23/ioslu-zhi-sheng-yin-hua-chu-yin-pin-zhi-shi-qi</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[编译iphone的静态库]]></title>
@@ -125,8 +134,7 @@ libcurl.a (for architecture i386):  current ar archive random library
 <p>后记:
  实际应用中按照php的curl库的思路去寻找一个 CURLOPT_RETURNTRANSFER最后发现只能使用CURLOPT_WRITEFUNCTION和CURLOPT_WRITEDATA来获得请求数据</p>
 
-<pre>
-#include <stdio.h>#include <stdlib.h>#include <string.h>#include <curl/curl.h>struct string {  char *ptr;  size_t len;};void init_string(struct string *s) {  s->len = 0;  s->ptr = malloc(s->len+1);  if (s->ptr == NULL) {    fprintf(stderr, "malloc() failed\n");    exit(EXIT_FAILURE);  }  s->ptr[0] = '\0';}size_t writefunc(void *ptr, size_t size, size_t nmemb, struct string *s){  size_t new_len = s->len + size*nmemb;  s->ptr = realloc(s->ptr, new_len+1);  if (s->ptr == NULL) {    fprintf(stderr, "realloc() failed\n");    exit(EXIT_FAILURE);  }  memcpy(s->ptr+s->len, ptr, size*nmemb);  s->ptr[new_len] = '\0';  s->len = new_len;  return size*nmemb;}int main(void){  CURL *curl;  CURLcode res;  curl = curl_easy_init();  if(curl) {    struct string s;    init_string(&s);    curl_easy_setopt(curl, CURLOPT_URL, "curl.haxx.se");    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writefunc);    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &s);    res = curl_easy_perform(curl);    printf("%s\n", s.ptr);    free(s.ptr);    /* always cleanup */    curl_easy_cleanup(curl);  }  return 0;}</pre>
+<pre>#include <stdio.h>#include <stdlib.h>#include <string.h>#include <curl/curl.h>struct string {  char *ptr;  size_t len;};void init_string(struct string *s) {  s->len = 0;  s->ptr = malloc(s->len+1);  if (s->ptr == NULL) {    fprintf(stderr, "malloc() failed\n");    exit(EXIT_FAILURE);  }  s->ptr[0] = '\0';}size_t writefunc(void *ptr, size_t size, size_t nmemb, struct string *s){  size_t new_len = s->len + size*nmemb;  s->ptr = realloc(s->ptr, new_len+1);  if (s->ptr == NULL) {    fprintf(stderr, "realloc() failed\n");    exit(EXIT_FAILURE);  }  memcpy(s->ptr+s->len, ptr, size*nmemb);  s->ptr[new_len] = '\0';  s->len = new_len;  return size*nmemb;}int main(void){  CURL *curl;  CURLcode res;  curl = curl_easy_init();  if(curl) {    struct string s;    init_string(&s);    curl_easy_setopt(curl, CURLOPT_URL, "curl.haxx.se");    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writefunc);    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &s);    res = curl_easy_perform(curl);    printf("%s\n", s.ptr);    free(s.ptr);    /* always cleanup */    curl_easy_cleanup(curl);  }  return 0;}</pre>
 
 
 <p></p>
